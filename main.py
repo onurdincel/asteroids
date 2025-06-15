@@ -6,6 +6,12 @@ def main():
     pygame.init()
     clock = pygame.time.Clock()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+
+    Player.containers = (updatable, drawable)
+
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
     dt = 0
@@ -15,12 +21,17 @@ def main():
     print(f"Screen height: {SCREEN_HEIGHT}")
 
     while True:
+
         screen.fill((0, 0, 0))
 
-        player.update(dt)
-        player.draw(screen)
+        for updatable_thing in updatable:
+            updatable_thing.update(dt)
+
+        for draw_thing in drawable:
+            draw_thing.draw(screen)
 
         pygame.display.flip()
+
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
